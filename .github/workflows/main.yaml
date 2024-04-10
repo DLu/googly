@@ -28,3 +28,14 @@ jobs:
 
     - name: Install package
       run: python -m pip install -e .[test]
+
+    - name: Test package
+      run: python -m pytest --cov=googly
+      env:
+        SECRETSJSON: ${{ secrets.SECRETSJSON }}
+        SHEETS_CREDS: ${{ secrets.SHEETS_CREDS }}
+
+    - name: Upload coverage report
+      uses: codecov/codecov-action@v3.1.4
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

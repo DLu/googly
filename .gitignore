@@ -1,0 +1,3 @@
+.coverage
+secrets.json
+src/googly/_version.py

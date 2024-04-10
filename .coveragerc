@@ -1,0 +1,5 @@
+[run]
+source = googly
+[report]
+omit =
+    *_version.py

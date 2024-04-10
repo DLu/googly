@@ -48,3 +48,20 @@ class API:
                 f.write(json_s)
 
         self.service = build(name, version, credentials=creds, **kwargs)
+
+    def get_paged_result(self, api_method, result_keyword, **kwargs):
+        next_token = None
+        seen = 0
+
+        while True:
+            results = api_method(
+                pageToken=next_token,
+                **kwargs,
+            ).execute()
+
+            yield from results[result_keyword]
+            seen += len(results[result_keyword])
+            next_token = results.get('nextPageToken')
+
+            if not next_token:
+                break

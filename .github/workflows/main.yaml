@@ -32,6 +32,7 @@ jobs:
     - name: Test package
       run: python -m pytest --cov=googly
       env:
+        CALENDAR_CREDS: ${{ secrets.CALENDAR_CREDS }}
         DRIVE_CREDS: ${{ secrets.DRIVE_CREDS }}
         SHEETS_CREDS: ${{ secrets.SHEETS_CREDS }}
 

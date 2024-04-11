@@ -49,9 +49,11 @@ class API:
 
         self.service = build(name, version, credentials=creds, **kwargs)
 
-    def get_paged_result(self, api_method, result_keyword, **kwargs):
+    def get_paged_result(self, api_method, result_keyword, max_results=0, max_results_param_name='pageSize', **kwargs):
         next_token = None
         seen = 0
+        if max_results:
+            kwargs[max_results_param_name] = max_results
 
         while True:
             results = api_method(
@@ -63,5 +65,5 @@ class API:
             seen += len(results[result_keyword])
             next_token = results.get('nextPageToken')
 
-            if not next_token:
+            if not next_token or (max_results and seen >= max_results):
                 break

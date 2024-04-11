@@ -30,6 +30,7 @@ classifiers = [
   'Topic :: Internet',
   'Topic :: Office/Business :: Financial :: Spreadsheet',
   'Topic :: Office/Business :: Scheduling',
+  'Topic :: Communications :: Email',
 ]
 
 [project.optional-dependencies]

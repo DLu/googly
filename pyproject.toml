@@ -29,6 +29,7 @@ classifiers = [
   'Development Status :: 3 - Alpha',
   'Topic :: Internet',
   'Topic :: Office/Business :: Financial :: Spreadsheet',
+  'Topic :: Office/Business :: Scheduling',
 ]
 
 [project.optional-dependencies]

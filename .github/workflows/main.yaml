@@ -34,6 +34,7 @@ jobs:
       env:
         CALENDAR_CREDS: ${{ secrets.CALENDAR_CREDS }}
         DRIVE_CREDS: ${{ secrets.DRIVE_CREDS }}
+        GMAIL_CREDS: ${{ secrets.GMAIL_CREDS }}
         SHEETS_CREDS: ${{ secrets.SHEETS_CREDS }}
 
     - name: Upload coverage report

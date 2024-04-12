@@ -39,6 +39,11 @@ test = [
   "pytest-cov>=2",
 ]
 
+docs = [
+  "myst_parser >=0.13",
+  "sphinx >=4.0",
+]
+
 [project.urls]
 Homepage = "https://github.com/DLu/googly"
 "Bug Tracker" = "https://github.com/DLu/googly/issues"

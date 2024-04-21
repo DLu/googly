@@ -32,10 +32,7 @@ jobs:
     - name: Test package
       run: python -m pytest --cov=googly
       env:
-        CALENDAR_CREDS: ${{ secrets.CALENDAR_CREDS }}
-        DRIVE_CREDS: ${{ secrets.DRIVE_CREDS }}
-        GMAIL_CREDS: ${{ secrets.GMAIL_CREDS }}
-        SHEETS_CREDS: ${{ secrets.SHEETS_CREDS }}
+        GOOGLY_CREDENTIALS: ${{ secrets.GOOGLY_CREDENTIALS }}
 
     - name: Upload coverage report
       uses: codecov/codecov-action@v3.1.4

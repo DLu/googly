@@ -1,10 +1,10 @@
 # https://www.myabandonware.com/game/test-drive-di/play-di
 from googly import DriveAPI
-from secret_auth import get_secrets
+from creds import get_credentials
 
 
 def test_basic_access():
-    api = DriveAPI(**get_secrets())
+    api = DriveAPI(**get_credentials())
 
     files = list(api.get_files())
 

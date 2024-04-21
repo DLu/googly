@@ -1,7 +1,7 @@
 from googly import SheetsAPI
 from googly.apps.sheets import coord_to_cell, cell_to_coord
 import pytest
-from secret_auth import get_secrets
+from creds import get_credentials
 
 DATA = [
     # col, row, spec
@@ -32,7 +32,7 @@ def test_conversion(coords, spec):
 
 
 def test_basic_access():
-    api = SheetsAPI(**get_secrets())
+    api = SheetsAPI(**get_credentials())
 
     api.set_sheet_id('1eq8DhTowKJqPiybptG850V_kMr9336RkSo27GbJEZ3c')
 
@@ -80,6 +80,6 @@ def test_basic_access():
 
 
 def test_no_sheet_id():
-    api = SheetsAPI(**get_secrets())
+    api = SheetsAPI(**get_credentials())
     with pytest.raises(Exception):
         api.get_value('A1')

@@ -1,9 +1,9 @@
 from googly import CalendarAPI
-from secret_auth import get_secrets
+from creds import get_credentials
 
 
 def test_basic_access():
-    api = CalendarAPI(**get_secrets())
+    api = CalendarAPI(**get_credentials())
 
     events = list(api.get_events())
 

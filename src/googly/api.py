@@ -2,6 +2,7 @@ import pathlib
 import json
 
 from google.auth.transport.requests import Request
+from google.auth.exceptions import RefreshError
 import google.oauth2.credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -10,8 +11,8 @@ DEFAULT_CREDENTIALS_FOLDER = pathlib.Path('~/.config/googly/').expanduser()
 
 
 class API:
-    def __init__(self, name, version, scopes, user_credentials_folder=None, user_credentials_subfolder=None,
-                 project_secrets_path='secrets.json',
+    def __init__(self, name, version, scopes, project_credentials_path='secrets.json',
+                 user_credentials_folder=None, user_credentials_subfolder=None,
                  **kwargs):
 
         # Build Credentials Path
@@ -26,6 +27,9 @@ class API:
         credentials_path = user_credentials_folder / f'{name}.json'
 
         creds = None
+        run_flow = True
+        write_creds = False
+
         if credentials_path.exists():
             # Load dictionary and convert to Credentials object
             creds_d = json.load(open(credentials_path))
@@ -34,13 +38,23 @@ class API:
             if cred_scopes == scopes:
                 creds = google.oauth2.credentials.Credentials.from_authorized_user_info(creds_d)
 
-        if not creds or not creds.valid:  # pragma: no cover
-            if creds and creds.expired and creds.refresh_token:
-                creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(project_secrets_path, scopes)
-                creds = flow.run_local_server()
+                if creds.valid:
+                    run_flow = False
+                elif creds.expired and creds.refresh_token:  # pragma: no cover
+                    try:
+                        creds.refresh(Request())
+                        run_flow = False
+                        write_creds = True
+                    except RefreshError as e:
+                        creds = None
+                        print(f'Cannot refresh token for {name}: {e.args[0]}')
 
+        if run_flow:  # pragma: no cover
+            flow = InstalledAppFlow.from_client_secrets_file(project_credentials_path, scopes)
+            creds = flow.run_local_server()
+            write_creds = True
+
+        if write_creds:  # pragma: no cover
             # Convert credentials object to dictionary and write to file
             json_s = creds.to_json()
             credentials_path.parent.mkdir(exist_ok=True, parents=True)

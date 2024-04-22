@@ -31,7 +31,7 @@ def get_credentials():
 
     return {
         'user_credentials_subfolder': subfolder,
-        'project_secrets_path': secrets_path,
+        'project_credentials_path': secrets_path,
     }
 
 

@@ -14,6 +14,8 @@
 :maxdepth: 2
 
 google
+googly
+auth
 
 ```
 

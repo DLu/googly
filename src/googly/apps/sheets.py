@@ -39,7 +39,10 @@ def cell_to_coord(spec):
 class SheetsAPI(googly.API):
     # https://developers.google.com/sheets/api/guides/concepts
 
-    def __init__(self, spreadsheetId=None, scopes=['https://www.googleapis.com/auth/spreadsheets.readonly'], **kwargs):
+    class Scope(googly.Scope):
+        SPREADSHEETS_READONLY = 1
+
+    def __init__(self, spreadsheetId=None, scopes=Scope.all(), **kwargs):
         googly.API.__init__(self, 'sheets', 'v4', scopes, **kwargs)
         self.api = self.service.spreadsheets()
         self.set_sheet_id(spreadsheetId)

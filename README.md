@@ -12,3 +12,11 @@
 [adapted from en.wiktionary.org](https://en.wiktionary.org/wiki/googly)
 
 <!-- SPHINX-STOP -->
+
+![GH action status](https://github.com/DLu/googly/actions/workflows/main.yaml/badge.svg)
+[![codecov](https://codecov.io/gh/DLu/googly/graph/badge.svg?token=M11YQ62JK6)](https://codecov.io/gh/DLu/googly)
+
+## Documentation
+
+[![Documentation Status](https://readthedocs.org/projects/googly/badge/?version=latest)](https://googly.readthedocs.io/en/latest/?badge=latest)
+[`http://googly.readthedocs.org/`](http://googly.readthedocs.org/)

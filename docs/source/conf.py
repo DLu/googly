@@ -12,3 +12,4 @@ source_suffix = ['.md']
 
 # -- Options for HTML output -------------------------------------------------
 autoclass_content = 'both'
+html_static_path = ['_static']

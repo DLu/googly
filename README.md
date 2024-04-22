@@ -10,3 +10,5 @@
    1. having qualities in line with the Google's corporate culture
 
 [adapted from en.wiktionary.org](https://en.wiktionary.org/wiki/googly)
+
+<!-- SPHINX-STOP -->

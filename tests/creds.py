@@ -27,7 +27,7 @@ def get_credentials():
 
             credentials_path.parent.mkdir(exist_ok=True, parents=True)
             with open(credentials_path, 'w') as f:
-                f.write(contents)
+                f.write(json.dumps(contents))
 
     return {
         'user_credentials_subfolder': subfolder,

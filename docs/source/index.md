@@ -8,3 +8,17 @@
 ```{include} ../../README.md
 :end-before: <!-- SPHINX-STOP -->
 ```
+
+## Guides
+```{toctree}
+:maxdepth: 2
+
+google
+
+```
+
+
+## Indices and tables
+
+- {ref}`genindex`
+- {ref}`search`

@@ -4,7 +4,10 @@ import googly
 class DriveAPI(googly.API):
     # https://developers.google.com/drive/api/reference/rest/v3
 
-    def __init__(self, scopes=['https://www.googleapis.com/auth/drive.metadata.readonly'], **kwargs):
+    class Scope(googly.Scope):
+        DRIVE_METADATA_READONLY = 1
+
+    def __init__(self, scopes=Scope.all(), **kwargs):
         googly.API.__init__(self, 'drive', 'v3', scopes, **kwargs)
 
     def get_file_info(self, fileId, **kwargs):

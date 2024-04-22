@@ -5,9 +5,10 @@ import collections
 class GMailAPI(googly.API):
     # https://developers.google.com/gmail/api
 
-    def __init__(self,
-                 scopes=['https://www.googleapis.com/auth/gmail.readonly'],
-                 **kwargs):
+    class Scope(googly.Scope):
+        GMAIL_READONLY = 1
+
+    def __init__(self, scopes=Scope.all(), **kwargs):
         googly.API.__init__(self, 'gmail', 'v1', scopes, **kwargs)
 
     def get_messages(self, query='', user_id='me', **kwargs):

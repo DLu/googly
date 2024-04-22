@@ -80,6 +80,6 @@ def test_basic_access():
 
 
 def test_no_sheet_id():
-    api = SheetsAPI(**get_credentials())
+    api = SheetsAPI(scopes=SheetsAPI.Scope.SPREADSHEETS_READONLY, **get_credentials())
     with pytest.raises(Exception):
         api.get_value('A1')

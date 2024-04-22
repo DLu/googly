@@ -30,12 +30,15 @@ class API:
         run_flow = True
         write_creds = False
 
+        if not isinstance(scopes, list):
+            scopes = list(scopes)
+
         if credentials_path.exists():
             # Load dictionary and convert to Credentials object
             creds_d = json.load(open(credentials_path))
 
             cred_scopes = creds_d.get('scopes', [])
-            if cred_scopes == scopes:
+            if set(cred_scopes) == set(scopes):  # ignore order
                 creds = google.oauth2.credentials.Credentials.from_authorized_user_info(creds_d)
 
                 if creds.valid:

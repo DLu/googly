@@ -33,6 +33,8 @@ If using certain "sensitive" APIs, your app will need to be verified before it i
 ### Specific Scope Selection
 Next, the user will need to confirm that they want to give your application access to the data you've requested.
 
+![screenshot saying your app wants access to your Google account](_static/Permissions.png)
+
 ## File Customization
 All of the API objects take three parameters related to authentication.
  * `project_credentials_path`

@@ -54,7 +54,8 @@ def collect_creds(services, include_secrets=False):
         creds['services'][service] = json.load(open(filepath))
 
     if remaining:
-        raise RuntimeError(f'Cannot find credentials for {", ".join(services)}')
+        service_s = ', '.join(services)
+        raise RuntimeError(f'Cannot find credentials for {service_s}')
 
     return creds
 

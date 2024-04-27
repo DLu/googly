@@ -14,9 +14,10 @@ class DriveAPI(googly.API):
         return self.service.files().get(fileId=fileId, **kwargs).execute()
 
     def get_files(self, file_fields=['id', 'name'], **kwargs):
+        field_s = ', '.join(file_fields)
         yield from self.get_paged_result(
             self.service.files().list,
             'files',
-            fields=f'nextPageToken, files({", ".join(file_fields)})',
+            fields=f'nextPageToken, files({field_s})',
             **kwargs
         )

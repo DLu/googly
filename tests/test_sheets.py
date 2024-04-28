@@ -38,8 +38,8 @@ def test_basic_access():
 
     assert api.get_value('A1') == 'Name'
     assert api.get_value((0, 3)) == 'Daniel Murphy'
-    assert api.get_value((26, 3)) == '10'
-    assert api.get_value('Pitching!E3') == '2.54'
+    assert api.get_value((26, 3)) == 10
+    assert api.get_value('Pitching!E3') == 2.54
 
     with pytest.raises(IndexError):
         api.get_value((27, 3))
@@ -49,12 +49,12 @@ def test_basic_access():
 
     age_cells = api.get_range('Pitching!B2:B6')
     assert len(age_cells) == 5
-    ages = [int(row[0]) for row in age_cells]
+    ages = [row[0] for row in age_cells]
     assert sum(ages) // len(ages) == 29
 
     for row in api.get_dictionaries('Pitching!A1:H6'):
         assert 'ERA' in row
-        assert isinstance(row['ERA'], str)
+        assert isinstance(row['ERA'], float)
 
     assert api.get_size() == (27, 11)
     assert api.get_size(0) == (27, 11)
@@ -76,7 +76,7 @@ def test_basic_access():
     assert contents[0][0] == 'Name'
     assert contents[0][-1] == 'IBB'
     assert contents[2][0] == 'Lucas Duda'
-    assert contents[2][10] == '27'
+    assert contents[2][10] == 27
 
 
 def test_no_sheet_id():

@@ -1,5 +1,6 @@
 # https://www.myabandonware.com/game/test-drive-di/play-di
 from googly import DriveAPI
+from googly.util import make_date
 from creds import get_credentials
 
 
@@ -25,7 +26,7 @@ def test_basic_access():
     assert 'createdTime' not in sheet_info
 
     sheet_info = api.get_file_info(sheet_id, fields='size, createdTime')
-    assert sheet_info['size'] == '2286'
-    assert sheet_info['createdTime'] == '2024-04-09T17:29:05.648Z'
+    assert sheet_info['size'] == 2286
+    assert sheet_info['createdTime'] == make_date(2024, 4, 9, 17, 29, 5, 648000)
     assert 'kind' not in sheet_info
     assert 'mimeType' not in sheet_info

@@ -1,6 +1,8 @@
 import pathlib
 import json
 
+from .util import destring
+
 from google.auth.transport.requests import Request
 from google.auth.exceptions import RefreshError
 import google.oauth2.credentials
@@ -66,7 +68,10 @@ class API:
 
         self.service = build(name, version, credentials=creds, **kwargs)
 
-    def get_paged_result(self, api_method, result_keyword, max_results=0, max_results_param_name='pageSize', **kwargs):
+    def get_paged_result(self, api_method, result_keyword,
+                         max_results=0, max_results_param_name='pageSize',
+                         interpret=False,
+                         **kwargs):
         next_token = None
         seen = 0
         if max_results:
@@ -78,7 +83,10 @@ class API:
                 **kwargs,
             ).execute()
 
-            yield from results[result_keyword]
+            if interpret:
+                yield from destring(results[result_keyword])
+            else:
+                yield from results[result_keyword]
             seen += len(results[result_keyword])
             next_token = results.get('nextPageToken')
 

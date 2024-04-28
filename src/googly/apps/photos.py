@@ -14,6 +14,7 @@ class PhotosAPI(googly.API):
         yield from self.get_paged_result(
             self.service.albums().list,
             'albums',
+            interpret=True,
         )
 
     def get_album_contents(self, album_id):
@@ -25,7 +26,7 @@ class PhotosAPI(googly.API):
                 body={'albumId': album_id, 'pageToken': next_token},
             ).execute()
 
-            yield from results['mediaItems']
+            yield from googly.destring(results['mediaItems'])
             next_token = results.get('nextPageToken')
 
             if not next_token:

@@ -35,6 +35,7 @@ You will need to enable each separate API you want to use. You can search for th
   * [Calendar](https://console.cloud.google.com/apis/library/calendar-json.googleapis.com)
   * [Drive](https://console.cloud.google.com/apis/library/drive.googleapis.com)
   * [GMail](https://console.cloud.google.com/apis/library/gmail.googleapis.com)
+  * [People](https://console.cloud.google.com/apis/library/people.googleapis.com)
   * [Photos](https://console.cloud.google.com/apis/library/photoslibrary.googleapis.com)
   * [Sheets](https://console.cloud.google.com/apis/library/sheets.googleapis.com)
   * [YouTube](https://console.cloud.google.com/apis/library/youtube.googleapis.com)

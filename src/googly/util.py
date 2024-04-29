@@ -1,5 +1,4 @@
 from ast import literal_eval
-from dateutil.parser import parse
 from datetime import datetime, timezone, timedelta
 import re
 
@@ -11,7 +10,11 @@ def destring(o):
         try:
             m = DATE_PATTERN.match(o)
             if m:
-                return parse(o)
+                # Edge case when Python version < 3.11
+                # https://stackoverflow.com/questions/127803/how-do-i-parse-an-iso-8601-formatted-date-and-time#comment94022430_49784038
+                if o.endswith('Z'):
+                    o = o[:-1] + '+00:00'
+                return datetime.fromisoformat(o)
             else:
                 return literal_eval(o)
         except (ValueError, SyntaxError):

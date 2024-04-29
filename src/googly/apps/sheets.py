@@ -81,7 +81,7 @@ class SheetsAPI(googly.API):
         if self.sheet_id is None:
             raise Exception('Must specify spreadsheetId in constructor or by calling set_sheet_id')
         try:
-            return self.api.values().get(spreadsheetId=self.sheet_id, range=range_spec).execute()
+            return googly.destring(self.api.values().get(spreadsheetId=self.sheet_id, range=range_spec).execute())
         except googleapiclient.errors.HttpError as e:
             if 'exceeds grid limits' in e.reason:
                 raise IndexError(e.reason)

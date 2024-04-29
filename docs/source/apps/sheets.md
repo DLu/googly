@@ -46,5 +46,5 @@ for row in api.get_dictionaries('Pitching'):
 ```
 This will use the first row as column headings and create dictionaries with the rest of the rows. The first thing printed is
 ```python
-{'Name': 'Bartolo Colón', 'Age': '42', 'W': '14', 'L': '13', 'ERA': '4.16', 'G': '33', 'IP': '194.2', 'H': '217'}
+{'Name': 'Bartolo Colón', 'Age': 42, 'W': 14, 'L': 13, 'ERA': 4.16, 'G': 33, 'IP': 194.2, 'H': 217}
 ```

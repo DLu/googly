@@ -17,5 +17,6 @@ class CalendarAPI(googly.API):
             max_results=maxResults,
             max_results_param_name='maxResults',
             calendarId=calendarId,
+            interpret=True,
             **kwargs
         )

@@ -1,5 +1,6 @@
 from googly import PeopleAPI
 from creds import get_credentials
+import pytest
 
 
 def test_basic_access():
@@ -30,3 +31,39 @@ def test_basic_access():
             continue
         assert contact['names'][0]['displayName'] == 'David Lu!!'
         assert contact['emailAddresses'][0]['value'] == 'davidvlu@gmail.com'
+
+
+def test_search_and_edit():
+    api = PeopleAPI(**get_credentials())
+
+    people = list(api.search_contacts('Rick'))
+    assert len(people) == 1
+
+    rick = people[0]
+    emails = rick['emailAddresses']
+    assert len(emails) == 1
+
+    # Edit
+    emails.append({'value': 'never@gonnaletyou.down'})
+    api.update_contact(rick['resourceName'], rick['etag'],
+                       emailAddresses=emails)
+
+    # Check
+    rick = list(api.search_contacts('never@gonnagiveyou.up'))[0]
+    emails = rick['emailAddresses']
+    assert len(emails) == 2
+
+    # Edit
+    emails = emails[:1]
+    api.update_contact(rick['resourceName'], rick['etag'],
+                       emailAddresses=emails)
+
+    # Check
+    rick = list(api.search_contacts('Rick'))[0]
+    emails = rick['emailAddresses']
+    assert len(emails) == 1
+
+    # Edit badly
+    with pytest.raises(RuntimeError):
+        api.update_contact(rick['resourceName'], rick['etag'],
+                           email_addys=emails)

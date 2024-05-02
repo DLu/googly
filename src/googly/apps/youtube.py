@@ -18,3 +18,16 @@ class YouTubeAPI(googly.API):
             mine=True,
             maxResults=max_results,
         )
+
+    def search(self, query, parts=['id', 'snippet'], max_results=10, order='viewCount', type='video'):
+        yield from self.get_paged_result(
+            self.service.search().list,
+            'items',
+            q=query,
+            part=','.join(parts),
+            order=order,
+            type=type,
+            max_results=max_results,
+            max_results_param_name='maxResults',
+
+        )

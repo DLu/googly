@@ -1,5 +1,5 @@
 from googly import PeopleAPI
-from creds import get_credentials
+from creds import get_credentials, is_github_job
 import pytest
 
 
@@ -34,6 +34,12 @@ def test_basic_access():
 
 
 def test_search_and_edit():
+    if is_github_job():
+        # This test is not thread safe and thus should not be run
+        # on Github (which will try to test it in parallel with
+        # multiple Python versions)
+        return
+
     api = PeopleAPI(**get_credentials())
 
     people = list(api.search_contacts('Rick'))

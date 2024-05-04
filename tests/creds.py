@@ -4,6 +4,10 @@ import json
 from googly.api import DEFAULT_CREDENTIALS_FOLDER
 
 
+def is_github_job():
+    return 'GOOGLY_CREDENTIALS' in os.environ
+
+
 def get_credentials():
     """Set up the test environment
 
@@ -13,7 +17,7 @@ def get_credentials():
     secrets_path = pathlib.Path('secrets.json')
     subfolder = 'googly'
 
-    if 'GOOGLY_CREDENTIALS' in os.environ:
+    if is_github_job():
         creds = json.loads(os.environ['GOOGLY_CREDENTIALS'])
 
         if 'secrets' in creds and not secrets_path.exists():

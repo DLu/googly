@@ -19,3 +19,13 @@ def test_basic_access():
     assert channel['title'] == 'Matt Denton'
     assert channel['resourceId']['channelId'] == 'UCbOrJwJsd4vFS4aLIILa_7Q'
     assert channel['channelId'] == 'UCymhhrwqneZRBsgnVPtlwzQ'
+
+
+def test_basic_search():
+    api = YouTubeAPI(**get_credentials())
+
+    vids = list(api.search('avengers'))
+    assert len(vids) == 10
+
+    vids = list(api.search('iron man', max_results=14))
+    assert len(vids) == 14

@@ -5,7 +5,10 @@
 </figure>
 </a>
 
+# ![googly](_static/logo.gif)
+
 ```{include} ../../README.md
+:start-after: <!-- SPHINX-START -->
 :end-before: <!-- SPHINX-STOP -->
 ```
 

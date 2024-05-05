@@ -1,4 +1,5 @@
-# googly
+# ![googly](docs/source/_static/logo.gif)
+<!-- SPHINX-START -->
 * googly (adjective) /ˈɡuɡli/
    1. (of the eyes) Bulging.
 * googly (noun) /ˈɡuɡli/

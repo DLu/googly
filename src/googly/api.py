@@ -56,7 +56,17 @@ class API:
 
         if run_flow:  # pragma: no cover
             flow = InstalledAppFlow.from_client_secrets_file(project_credentials_path, scopes)
-            creds = flow.run_local_server()
+
+            # When running multiple authentications in a row, the local server
+            # sometimes takes a few minutes to stop, resulting in
+            # OSError: [Errno 98] Address already in use
+            # We iterate over a few ports here to avoid that problem
+            for i in range(15):  # 15 ports oughta be enough for anyone
+                try:
+                    creds = flow.run_local_server(port=8080 + i)
+                    break
+                except OSError:
+                    pass
             write_creds = True
 
         if write_creds:  # pragma: no cover

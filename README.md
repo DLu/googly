@@ -12,6 +12,11 @@
 
 [adapted from en.wiktionary.org](https://en.wiktionary.org/wiki/googly)
 
+## Installation
+[![PyPI version](https://badge.fury.io/py/googly.svg)](https://badge.fury.io/py/googly)
+
+    sudo pip3 install googly
+
 <!-- SPHINX-STOP -->
 
 ![GH action status](https://github.com/DLu/googly/actions/workflows/main.yaml/badge.svg)

@@ -5,9 +5,9 @@
 * googly (noun) /ˈɡuɡli/
    1. (cricket) A ball that spins from off to leg
    2. (python) **A simple unofficial Python API for many Google APIs**
-* googly eye (noun) /ˈɡuɡli-ˌī/
+* googly eye (noun) /ˈɡuɡli aɪ/
    1. craft supplies that resemble eyes
-* googley (adjective) /ˈɡuɡəl-waɪ/
+* googley (adjective) /ˈɡuɡəli/
    1. having qualities in line with the Google's corporate culture
 
 [adapted from en.wiktionary.org](https://en.wiktionary.org/wiki/googly)

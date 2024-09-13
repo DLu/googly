@@ -67,6 +67,8 @@ class API:
                     break
                 except OSError:
                     pass
+            else:
+                raise RuntimeError('Unable to authenticate :(')
             write_creds = True
 
         if write_creds:  # pragma: no cover

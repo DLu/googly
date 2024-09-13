@@ -26,3 +26,5 @@
 
 [![Documentation Status](https://readthedocs.org/projects/googly/badge/?version=latest)](https://googly.readthedocs.io/en/latest/?badge=latest)
 [`http://googly.readthedocs.org/`](http://googly.readthedocs.org/)
+
+![a buncha googly eyes](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWVsaWZ1cDZ0dzY2ZHlkdGJib2hieTdmeHp2azE3ZnlwYWhoOTlsMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FkLMzWnIHxcs9WDJvf/giphy.gif)

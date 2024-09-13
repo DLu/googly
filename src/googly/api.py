@@ -28,7 +28,7 @@ class API:
 
         credentials_path = user_credentials_folder / f'{name}.json'
 
-        creds = None
+        self.creds = None
         run_flow = True
         write_creds = False
 
@@ -41,17 +41,17 @@ class API:
 
             cred_scopes = creds_d.get('scopes', [])
             if set(cred_scopes) == set(scopes):  # ignore order
-                creds = google.oauth2.credentials.Credentials.from_authorized_user_info(creds_d)
+                self.creds = google.oauth2.credentials.Credentials.from_authorized_user_info(creds_d)
 
-                if creds.valid:
+                if self.creds.valid:
                     run_flow = False
-                elif creds.expired and creds.refresh_token:  # pragma: no cover
+                elif self.creds.expired and self.creds.refresh_token:  # pragma: no cover
                     try:
-                        creds.refresh(Request())
+                        self.creds.refresh(Request())
                         run_flow = False
                         write_creds = True
                     except RefreshError as e:
-                        creds = None
+                        self.creds = None
                         print(f'Cannot refresh token for {name}: {e.args[0]}')
 
         if run_flow:  # pragma: no cover
@@ -63,20 +63,22 @@ class API:
             # We iterate over a few ports here to avoid that problem
             for i in range(15):  # 15 ports oughta be enough for anyone
                 try:
-                    creds = flow.run_local_server(port=8080 + i)
+                    self.creds = flow.run_local_server(port=8080 + i)
                     break
                 except OSError:
                     pass
+            else:
+                raise RuntimeError('Unable to authenticate :(')
             write_creds = True
 
         if write_creds:  # pragma: no cover
             # Convert credentials object to dictionary and write to file
-            json_s = creds.to_json()
+            json_s = self.creds.to_json()
             credentials_path.parent.mkdir(exist_ok=True, parents=True)
             with open(credentials_path, 'w') as f:
                 f.write(json_s)
 
-        self.service = build(name, version, credentials=creds, **kwargs)
+        self.service = build(name, version, credentials=self.creds, **kwargs)
 
     def get_paged_result(self, api_method, result_keyword,
                          max_results=0, max_results_param_name='pageSize',
@@ -93,11 +95,13 @@ class API:
                 **kwargs,
             ).execute()
 
+            items = results.get(result_keyword, [])
+
             if interpret:
-                yield from destring(results[result_keyword])
+                yield from destring(items)
             else:
-                yield from results[result_keyword]
-            seen += len(results[result_keyword])
+                yield from items
+            seen += len(items)
             next_token = results.get('nextPageToken')
 
             if not next_token or (max_results and seen >= max_results):

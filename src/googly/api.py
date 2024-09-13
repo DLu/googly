@@ -95,11 +95,13 @@ class API:
                 **kwargs,
             ).execute()
 
+            items = results.get(result_keyword, [])
+
             if interpret:
-                yield from destring(results[result_keyword])
+                yield from destring(items)
             else:
-                yield from results[result_keyword]
-            seen += len(results[result_keyword])
+                yield from items
+            seen += len(items)
             next_token = results.get('nextPageToken')
 
             if not next_token or (max_results and seen >= max_results):

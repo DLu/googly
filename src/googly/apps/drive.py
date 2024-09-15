@@ -12,6 +12,7 @@ class DriveAPI(googly.API):
 
     def __init__(self, scopes=Scope.all(), **kwargs):
         googly.API.__init__(self, 'drive', 'v3', scopes, **kwargs)
+        self.parent_cache = {}
 
     def get_file_info(self, fileId, **kwargs):
         return googly.destring(self.service.files().get(fileId=fileId, **kwargs).execute())
@@ -69,3 +70,22 @@ class DriveAPI(googly.API):
 
                 target_path.parent.mkdir(exist_ok=True, parents=True)
                 self.download_file(file_id, target_path)
+
+    def get_path(self, file_id):
+        current_file_id = file_id
+        path = []
+        while current_file_id:
+            if current_file_id in self.parent_cache:
+                parent_info = self.parent_cache[current_file_id]
+            else:
+                parent_info = self.get_file_info(current_file_id, fields='name, parents')
+                self.parent_cache[current_file_id] = parent_info
+
+            if current_file_id != file_id:
+                path.append(parent_info['name'])
+
+            if 'parents' not in parent_info:
+                break
+            assert len(parent_info['parents']) == 1
+            current_file_id = parent_info['parents'][0]
+        return list(reversed(path))

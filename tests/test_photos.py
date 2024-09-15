@@ -9,7 +9,7 @@ def test_basic_access():
     albums = list(api.get_albums())
 
     assert len(albums) == 1
-    album = albums[0]
+    album = api.get_album('A Perfectly Fine Test Album')
 
     assert album['title'] == 'A Perfectly Fine Test Album'
     assert album['mediaItemsCount'] == 1

@@ -95,3 +95,15 @@ def test_downloads():
 
         # Should download zero files
         api.download_folder('1gVDQMGLTHQwTEBZhDP6ibsvkpcR2SIhv', temp_dir)
+
+
+def test_path():
+    api = DriveAPI(**get_credentials())
+
+    # Check pika.gif
+    path = api.get_path('1YqKDODCT1Rb2q8wYTTb374QOcLxRGn3W')
+    assert path == ['My Drive', 'TestFolderA', 'TestFolderB', 'TestFolderD']
+
+    # Check link.txt - should hit the cache
+    path = api.get_path('1h2Fkt1hI96PA6C11CT296E060A2opLNT')
+    assert path == ['My Drive', 'TestFolderA', 'TestFolderB']

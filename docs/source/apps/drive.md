@@ -33,7 +33,7 @@ In this example, we list all the files in decreasing size order.
 from googly import DriveAPI
 import humanize
 api = DriveAPI()
-for item in api.get_files(file_fields=['name, size'],
+for item in api.get_files(file_fields=['name', 'size'],
                           orderBy='quotaBytesUsed desc'):
     sz = humanize.naturalsize(item['size'])
     print(f'{sz:15} {item["name"]}')
@@ -56,6 +56,10 @@ for dirpath, dirnames, filenames in api.walk(folder_id):
     print(f'{dirpath} has {len(dirnames)} subfolders '
           f'and {len(filenames)} files.')
 ```
+
+## Folders
+If you have a file id and want to figure out which folders it is in, you can call ``api.get_path(file_id)`` which will return a (possibly empty) list of strings that represents all the folders that the file is contained within.
+
 
 ## Downloads!
 To download a file, you simply pass a file ID and destination path into `download_file`.

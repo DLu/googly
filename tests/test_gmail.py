@@ -51,6 +51,38 @@ def test_break_modify_labels():
         api.modify_labels('msg_id', label_ids_to_remove=label_ids)
 
 
+def test_modify_labels():
+    api = GMailAPI(**get_credentials())
+    msg_id = '18ec87a5013ae2d9'
+
+    def get_labels():
+        msg = api.get_message(msg_id)
+        return msg['labelIds']
+
+    starting_labels = get_labels()
+    assert 'INBOX' in starting_labels
+    assert 'UNREAD' not in starting_labels
+    assert 'TRASH' not in starting_labels
+
+    api.mark_as_unread(msg_id)
+    assert 'UNREAD' in get_labels()
+
+    api.mark_as_read(msg_id)
+    assert 'UNREAD' not in get_labels()
+
+    api.move_to_archive(msg_id)
+    assert 'INBOX' not in get_labels()
+
+    api.move_to_trash(msg_id)
+    assert 'TRASH' in get_labels()
+    assert 'INBOX' not in get_labels()
+
+    api.untrash(msg_id)
+    api.unarchive(msg_id)
+    assert 'INBOX' in get_labels()
+    assert 'TRASH' not in get_labels()
+
+
 def test_create_error_laden_email():
     with pytest.raises(RuntimeError):
         # No recipients

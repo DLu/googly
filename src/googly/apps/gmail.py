@@ -146,6 +146,30 @@ class GMailAPI(googly.API):
             }
         ).execute()
 
+    def mark_as_read(self, msg_id):
+        self.modify_labels(msg_id, label_ids_to_remove=['UNREAD'])
+
+    def mark_as_unread(self, msg_id):
+        self.modify_labels(msg_id, label_ids_to_add=['UNREAD'])
+
+    def move_to_archive(self, msg_id):
+        self.modify_labels(msg_id, label_ids_to_remove=['INBOX'])
+
+    def unarchive(self, msg_id):
+        self.modify_labels(msg_id, label_ids_to_add=['INBOX'])
+
+    def move_to_trash(self, msg_id, user_id='me'):
+        return self.service.users().messages().trash(
+            userId=user_id,
+            id=msg_id,
+        ).execute()
+
+    def untrash(self, msg_id, user_id='me'):
+        return self.service.users().messages().untrash(
+            userId=user_id,
+            id=msg_id,
+        ).execute()
+
     def send_email(self, *args, **kwargs):
         message = create_email(*args, **kwargs)
         self.send_email_object(message)

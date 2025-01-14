@@ -10,10 +10,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
 DEFAULT_CREDENTIALS_FOLDER = pathlib.Path('~/.config/googly/').expanduser()
+CONFIG_PATH = DEFAULT_CREDENTIALS_FOLDER / 'config.json'
 
 
 class API:
-    def __init__(self, name, version, scopes, project_credentials_path='secrets.json',
+    def __init__(self, name, version, scopes, project_credentials_path=None,
                  user_credentials_folder=None, user_credentials_subfolder=None,
                  **kwargs):
 
@@ -55,6 +56,14 @@ class API:
                         print(f'Cannot refresh token for {name}: {e.args[0]}')
 
         if run_flow:  # pragma: no cover
+            if CONFIG_PATH.exists():
+                config = json.load(open(CONFIG_PATH))
+                if 'project_credentials_path' in config:
+                    project_credentials_path = config['project_credentials_path']
+
+            if not project_credentials_path:
+                project_credentials_path = 'secrets.json'
+
             flow = InstalledAppFlow.from_client_secrets_file(project_credentials_path, scopes)
 
             # When running multiple authentications in a row, the local server

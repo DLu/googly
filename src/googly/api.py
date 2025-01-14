@@ -64,6 +64,12 @@ class API:
             if not project_credentials_path:
                 project_credentials_path = 'secrets.json'
 
+            if user_credentials_subfolder:
+                user_s = f' for user {user_credentials_subfolder}'
+            else:
+                user_s = ''
+            prompt_message = f'To authorize the {name} API{user_s}, please visit this URL: {{url}}'
+
             flow = InstalledAppFlow.from_client_secrets_file(project_credentials_path, scopes)
 
             # When running multiple authentications in a row, the local server
@@ -72,7 +78,10 @@ class API:
             # We iterate over a few ports here to avoid that problem
             for i in range(15):  # 15 ports oughta be enough for anyone
                 try:
-                    self.creds = flow.run_local_server(port=8080 + i)
+                    self.creds = flow.run_local_server(
+                        port=8080 + i,
+                        authorization_prompt_message=prompt_message
+                    )
                     break
                 except OSError:
                     pass

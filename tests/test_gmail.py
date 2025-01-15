@@ -1,5 +1,5 @@
 from googly import GMailAPI
-from googly.apps.gmail import base64_encode_email, create_email, infer_types
+from googly.apps.gmail import base64_encode_email, create_email, infer_types, get_header
 from creds import get_credentials
 import pytest
 
@@ -81,6 +81,78 @@ def test_modify_labels():
     api.unarchive(msg_id)
     assert 'INBOX' in get_labels()
     assert 'TRASH' not in get_labels()
+
+
+def test_message_formats():
+    api = GMailAPI(**get_credentials())
+    msg_id = '18ec87a5013ae2d9'
+
+    # Default (full)
+    msg = api.get_message(msg_id)
+    assert 'id' in msg
+    assert 'labelIds' in msg
+    assert 'payload' in msg
+    payload = msg['payload']
+    assert 'headers' in payload
+    assert 'body' in payload
+    assert 'raw' not in msg
+
+    # Full
+    msg = api.get_message(msg_id, 'full')
+    assert 'id' in msg
+    assert 'labelIds' in msg
+    assert 'payload' in msg
+    payload = msg['payload']
+    assert 'headers' in payload
+    assert 'body' in payload
+    assert 'raw' not in msg
+
+    # Minimal
+    msg = api.get_message(msg_id, 'minimal')
+    assert 'id' in msg
+    assert 'labelIds' in msg
+    assert 'payload' not in msg
+    assert 'raw' not in msg
+
+    # Metadata
+    msg = api.get_message(msg_id, 'metadata')
+    assert 'id' in msg
+    assert 'labelIds' in msg
+    assert 'payload' in msg
+    payload = msg['payload']
+    assert 'headers' in payload
+    assert get_header(payload['headers'], 'To') == 'thegooglyapi@gmail.com'
+    assert get_header(payload['headers'], 'Delivered-To') == 'thegooglyapi@gmail.com'
+    assert get_header(payload['headers'], 'Subject') == 'This is a test email'
+    assert get_header(payload['headers'], 'Bogus') is None
+    assert 'body' not in payload
+    assert 'raw' not in msg
+
+    # Metadata (Restricted)
+    msg = api.get_message(msg_id, 'metadata', ['To', 'Subject'])
+    assert 'payload' in msg
+    payload = msg['payload']
+    assert 'headers' in payload
+    assert get_header(payload['headers'], 'To') == 'thegooglyapi@gmail.com'
+    assert get_header(payload['headers'], 'Delivered-To') is None
+    assert get_header(payload['headers'], 'Subject') == 'This is a test email'
+    assert get_header(payload['headers'], 'Bogus') is None
+    assert 'body' not in payload
+
+    # Incompatible metadata restriction
+    with pytest.raises(RuntimeError):
+        api.get_message(msg_id, 'minimal', ['To', 'Subject'])
+
+    # Raw
+    msg = api.get_message(msg_id, 'raw')
+    assert 'id' in msg
+    assert 'labelIds' in msg
+    assert 'payload' not in msg
+    assert 'raw' in msg
+
+    # Unknown Format
+    with pytest.raises(RuntimeError):
+        api.get_message(msg_id, 'bogus')
 
 
 def test_create_error_laden_email():

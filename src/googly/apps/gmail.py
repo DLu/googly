@@ -80,6 +80,13 @@ def base64_encode_email(message):
     return base64.urlsafe_b64encode(message.as_bytes()).decode()
 
 
+def get_header(header_list, name):
+    """Return the first header with a matching name."""
+    for header in header_list:
+        if header['name'] == name:
+            return header['value']
+
+
 class GMailAPI(googly.API):
     # https://developers.google.com/gmail/api
 
@@ -116,10 +123,24 @@ class GMailAPI(googly.API):
             threads[m['threadId']].append(m)
         return dict(threads)
 
-    def get_message(self, msg_id, user_id='me'):
+    def get_message(self, msg_id, msg_format='full', metadata_headers=[], user_id='me'):
+        if msg_format not in ['minimal', 'full', 'raw', 'metadata']:
+            raise RuntimeError(f'{repr(msg_format)} is not a valid message format')
+        if msg_format != 'metadata' and metadata_headers:
+            raise RuntimeError(f'Cannot specify metadata headers when format = {msg_format}')
+
         return self.service.users().messages().get(
             userId=user_id,
-            id=msg_id
+            id=msg_id,
+            format=msg_format,
+            metadataHeaders=metadata_headers,
+        ).execute()
+
+    def get_attachment(self, msg_id, attachment_id, user_id='me'):
+        return self.service.users().messages().attachments().get(
+            userId=user_id,
+            messageId=msg_id,
+            id=attachment_id,
         ).execute()
 
     def get_thread(self, thread_id, user_id='me', format='minimal'):

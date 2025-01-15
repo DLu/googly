@@ -34,6 +34,10 @@ threads = api.get_threads()
 
 This method returns a dictionary, where the keys are `threadId`s and the values are lists of [Messages](https://developers.google.com/gmail/api/reference/rest/v1/users.messages). You can also iterate over the messages directly (without the threading) using the `get_messages()` method.
 
+Alternatively, you can also use `get_message` to control more precisely what information you want retrieved on a per-message basis by setting the [`msg_format` argument](https://developers.google.com/gmail/api/reference/rest/v1/Format).
+
+There also is functionality to retrieve attachments with `get_attachment`.
+
 ## Modify Labels
 To modify the labels for a message, you need
  * The message id
